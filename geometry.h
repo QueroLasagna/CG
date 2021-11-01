@@ -5,13 +5,18 @@
 
 inline float triArea(vec2 a, vec2 b, vec2 c){
 	/*  TAREFA - AULA 2 */
-	return 0.0;
+	float pt1 = (c(0) - a(0)) * (b(1) - a(1))/2;
+	float pt2 = (b(0) - a(0)) * (c(1) - a(1))/2;
+	return pt1 - pt2;
 }
 
 template<class Tri>
 vec3 barycentric(vec2 p, const Tri& P){
 	/*  TAREFA - AULA 2 */
-	return {0, 0, 0};
+	float a1 = triArea(p, P[1], P[2]);
+	float a2 = triArea(P[0], p, P[2]);
+	float a3 = triArea(P[0], P[1], p);
+	return {a1, a2, a3};
 }
 
 template<class Tri>
