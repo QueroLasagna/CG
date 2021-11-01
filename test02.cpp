@@ -1,6 +1,10 @@
 #include "vec.h"
 #include "geometry.h"
 
+/**
+ * Testando 1
+*/
+
 int main(){
 	vec2 P[] = {{0, 1}, {4, 2}, {2, 4}};
 
