@@ -3,6 +3,10 @@
 
 #include "vec.h"
 
+/**
+ * implementando as respostas
+*/
+
 inline float triArea(vec2 a, vec2 b, vec2 c){
 	/*  TAREFA - AULA 2 */
 	float pt1 = (c(0) - a(0)) * (b(1) - a(1))/2;
