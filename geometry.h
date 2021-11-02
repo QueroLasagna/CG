@@ -14,6 +14,10 @@ template<class Tri>
 vec3 barycentric(vec2 p, const Tri& P){
 	/*  TAREFA - AULA 2 */
 
+	/**
+	 * Testando
+	*/
+
 	float areaTotal = triArea(P[0], P[1], P[2]);
 
 	float a1 = triArea(p, P[1], P[2])/areaTotal;
