@@ -20,10 +20,10 @@ int main(){
 	print("Q", Q);
 	print("vQ", vQ);
 	
-	vec2 R = {13,22};
-	vec3 b = barycentric(R, P);
-	print("coordenadas baricentricas", b );
-	vec2 vR = b(0)*P[0] + b(1)*P[1] + b(2)*P[2];
-	print("R", R);
-	print("vR", vR);
+	// vec2 R = {13,22};
+	// vec3 b = barycentric(R, P);
+	// print("coordenadas baricentricas", b );
+	// vec2 vR = b(0)*P[0] + b(1)*P[1] + b(2)*P[2];
+	// print("R", R);
+	// print("vR", vR);
 }
