@@ -1,10 +1,6 @@
 #include "vec.h"
 #include "geometry.h"
 
-/**
- * Testando 1.1
-*/
-
 int main(){
 	vec2 P[] = {{0, 1}, {4, 2}, {2, 4}};
 
@@ -20,10 +16,4 @@ int main(){
 	print("Q", Q);
 	print("vQ", vQ);
 	
-	// vec2 R = {13,22};
-	// vec3 b = barycentric(R, P);
-	// print("coordenadas baricentricas", b );
-	// vec2 vR = b(0)*P[0] + b(1)*P[1] + b(2)*P[2];
-	// print("R", R);
-	// print("vR", vR);
 }
