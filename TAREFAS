@@ -13,6 +13,11 @@
     - Criar imagem (600x600) de alvo
     - Criar imagem (600x600) colorida
 
+    #LEMBRETE::
+        
+        Para rodar o codigo, executar no terminal: 
+        g++ [programa que queremos executar].cpp ImageRGBA.cpp Image.cpp -o [nome do executavek].exe
+
 * Semana 4:
 
     (Aula 5)
