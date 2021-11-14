@@ -18,7 +18,8 @@ int main(){
 	img.fill(white);
 
     vec2 centro = {300, 300};
-    float raio = norma({300,0});
+    // float raio = norma({300,0});
+    float raio = 420;
 
     int num_circulo = 0;
 
