@@ -33,7 +33,7 @@ int main(){
         }
         count_y++;
     }
-	img.savePNG("output_S2-1.png");
+	img.savePNG("chess.png");
 
     return 0; 
 }
