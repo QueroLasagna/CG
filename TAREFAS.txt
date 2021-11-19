@@ -4,14 +4,14 @@
 
 * Semana 2 (feito):
 
-    - Criar funções triArea() e barycentric()
+    - Criar funções triArea e barycentric (Grupo todo)
 
 * Semana 3:
     
     (Aula 4)
-    - Criar imagem (600x600) de tabuleiro de xadrez
-    - Criar imagem (600x600) de alvo
-    - Criar imagem (600x600) colorida
+    - Criar imagem (600x600) de tabuleiro de xadrez (Caio)
+    - Criar imagem (600x600) de alvo (Pedro)
+    - Criar imagem (600x600) colorida (Luiz)
 
     #LEMBRETE::
         
@@ -21,10 +21,12 @@
 * Semana 4:
 
     (Aula 5)
-    - Objetos gráficos planares, razterizaç
+    - Fazer o boneco com funções inplícitas (luiz)
 
     (Aula 6)
-    - ??
+    - Implementar rasterização: ScanLine (Caio)
+    - Implementar classes StripLine, LineLoop (Caio)
+    - Implementar classes TriangleStrip, TriangleFan
 
 * Semana 5
 
