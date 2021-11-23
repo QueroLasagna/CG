@@ -62,15 +62,33 @@ class Triangles{
 };
 
 class TriangleStrip{
-	/*****************************/
-	/* TAREFA: AULA 06 */
-	/*****************************/
+    size_t n;
+public:
+    TriangleStrip(size_t s){ 
+		n = s - 2; 
+	}
+
+    size_t size() const{ 
+		return n; 
+	}
+
+    template<typename Vertex>
+    Triangle<Vertex> assemble(unsigned int i, const std::vector<Vertex>& V) const{
+        return { V[i], V[i + 1], V[i + 2] };
+    }
 };
 
 class TriangleFan{
-	/*****************************/
-	/* TAREFA: AULA 06 */
-	/*****************************/
+    size_t n;
+    public:
+    TriangleFan(size_t s){ n = s - 2; }
+
+    size_t size() const{ return n; }
+
+    template<typename Vertex>
+    Triangle<Vertex> assemble(unsigned int i, const std::vector<Vertex>& V) const{
+        return { V[0], V[i + 1], V[i + 2] };
+    }
 };
 
 class TrianglesRange{
