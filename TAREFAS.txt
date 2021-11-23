@@ -21,12 +21,12 @@
 * Semana 4:
 
     (Aula 5)
-    - Fazer o boneco com funções inplícitas (luiz)
+    - Fazer o boneco com funções implícitas (luiz)
 
     (Aula 6)
     - Implementar rasterização: ScanLine (Caio)
     - Implementar classes StripLine, LineLoop (Caio)
-    - Implementar classes TriangleStrip, TriangleFan
+    - Implementar classes TriangleStrip, TriangleFan (Pedro)
 
 * Semana 5
 
