@@ -36,12 +36,49 @@ class LineStrip{
 	/*****************************/
 	/* TAREFA: AULA 06 */
 	/*****************************/
+	size_t n;
+	public:
+	LineStrip(size_t n_verts){
+		if (n_verts >= 2){
+			n = n_verts - 1;
+		} else {
+			n = 0;
+		}
+	}
+
+	size_t size() const{ return n; }
+
+	template<typename Vertex>
+	Line<Vertex> assemble(unsigned int i, const std::vector<Vertex>& V) const{
+		return { V[i], V[i + 1] };
+	}
 };
 
 class LineLoop{
 	/*****************************/
 	/* TAREFA: AULA 06 */
 	/*****************************/
+
+	size_t n;
+	public:
+	LineLoop(size_t n_verts){
+		if (n_verts >= 2){
+			n = n_verts;
+		} else {
+			n = 0;
+		}
+	}
+
+	size_t size() const{ return n; }
+
+	template<typename Vertex>
+	Line<Vertex> assemble(unsigned int i, const std::vector<Vertex>& V) const{
+		if (i < n - 1){
+			return { V[i], V[i + 1] };
+		} else {
+			return { V[i], V[0] }; 
+		}
+	}
 };
 
 ///////////////////////////////////////////////////////////////////////
