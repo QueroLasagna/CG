@@ -64,9 +64,7 @@ class Triangles{
 class TriangleStrip{
     size_t n;
 public:
-    TriangleStrip(size_t s){ 
-		n = s - 2; 
-	}
+    TriangleStrip(size_t s){ n = s > 1 ? s - 2 : 0; }
 
     size_t size() const{ 
 		return n; 
@@ -81,7 +79,7 @@ public:
 class TriangleFan{
     size_t n;
     public:
-    TriangleFan(size_t s){ n = s - 2; }
+    TriangleFan(size_t s){ n = s > 1 ? s - 2 : 0; }
 
     size_t size() const{ return n; }
 
