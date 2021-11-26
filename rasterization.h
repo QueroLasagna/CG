@@ -5,11 +5,17 @@
 #include <cmath>
 #include "vec.h"
 #include "geometry.h"
+#include <iostream>
 
 //////////////////////////////////////////////////////////////////////////////
 
 struct Pixel{
 	int x, y;
+};
+
+struct Coeficientes{
+	float a;
+	float b;
 };
 
 inline Pixel toPixel(vec2 u){
@@ -115,8 +121,8 @@ inline std::vector<Pixel> bresenham(Pixel p0, Pixel p1){
 
 template<class Tri>
 std::vector<Pixel> rasterizeTriangle(const Tri& P){
-	return simple_rasterize_triangle(P);
-	//return scanline(P);
+	//return simple_rasterize_triangle(P);
+	return scanline(P);
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -142,10 +148,83 @@ std::vector<Pixel> simple_rasterize_triangle(const Tri& P){
 
 //////////////////////////////////////////////////////////////////////////////
 template<class Tri>
-std::vector<Pixel> scanline(const Tri& P){
+std::vector<Pixel> scanline(const Tri& T){
 	/* TAREFA */
-	std::vector<Pixel> out;
+	int xmin =  ceil(std::min({T[0](0), T[1](0), T[2](0)}));
+	int xmax = floor(std::max({T[0](0), T[1](0), T[2](0)}));
+    int ymin =  ceil(std::min({T[0](1), T[1](1), T[2](1)}));
+	int ymax = floor(std::max({T[0](1), T[1](1), T[2](1)}));
+
+    //cout << xmin << endl << xmax << endl;
+
+    std::vector<Coeficientes> coeficientes;
+
+	for (int i = 0; i < 3; i++){
+
+		// Pra controlar as variáveis 	
+		int p1, p2;
+		
+		// montando os pares de pontos que formarão
+		// as 3 faces (ou retas) do triangulo
+
+		if (i + 1 >= 3){
+			p1 = i;
+			p2 = 0;
+		} else {
+			p1 = i;
+			p2 = i + 1;
+		}	
+
+		// Calculando os coeficientes das 3 retas...
+		// E armazenando num vetor...
+
+		Coeficientes c;
+
+		c.a = (T[p2](1) - T[p1](1)) / (T[p2](0) - T[p1](0));
+		c.b = - (c.a * T[p1](0)) + T[p1](1);
+
+		coeficientes.push_back(c);
+	}
+
+    std::vector<Pixel> out; 
+    Pixel p;
+    std::vector<int> pontosDeIntersecao;
+
+    for (int y = ymin; y <= ymax; y++){
+        
+        pontosDeIntersecao.clear();
+        
+        for(Coeficientes c: coeficientes){
+            // calculando o x que tem interseçãp com a equaçao da reta dada
+            int x = (int)((y - c.b) / c.a);
+            // ax + b = y
+            // ax = y - b
+            // x = (y - b) / a
+            // Se o ponto encontrado estiver dentro do escopo do triangulo,
+            // ele é adicionado como um ponto válido
+            if (x >= xmin && x <= xmax){
+                pontosDeIntersecao.push_back(x);
+            }
+        }
+
+        int pontoInicial = pontosDeIntersecao[0];
+        int pontoFinal = pontoInicial;
+
+        for(int x: pontosDeIntersecao){
+            if (x <= pontoInicial){
+                pontoInicial = x;
+            } else if (x >= pontoFinal){
+                pontoFinal = x;
+            }
+        }
+
+        for (int i = pontoInicial; i < pontoFinal; i++){
+            p.x = i;
+            out.push_back({p.x, y});
+        }
+    }
 	return out;
 }
+
 
 #endif
