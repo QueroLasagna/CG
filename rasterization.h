@@ -16,6 +16,8 @@ struct Pixel{
 struct Coeficientes{
 	float a;
 	float b;
+	bool vertical;
+	int x;
 };
 
 inline Pixel toPixel(vec2 u){
@@ -180,10 +182,17 @@ std::vector<Pixel> scanline(const Tri& T){
 
 		Coeficientes c;
 
-		c.a = (T[p2](1) - T[p1](1)) / (T[p2](0) - T[p1](0));
-		c.b = - (c.a * T[p1](0)) + T[p1](1);
+		if (T[p2](0) - T[p1](0) != 0){
+			
+			c.a = (T[p2](1) - T[p1](1)) / (T[p2](0) - T[p1](0));
+			c.b = - (c.a * T[p1](0)) + T[p1](1);
 
-		coeficientes.push_back(c);
+			coeficientes.push_back(c);
+			c.vertical = false;
+		} else {
+			c.vertical = true;
+			c.x = T[p1](0);
+		}
 	}
 
     std::vector<Pixel> out; 
@@ -195,16 +204,21 @@ std::vector<Pixel> scanline(const Tri& T){
         pontosDeIntersecao.clear();
         
         for(Coeficientes c: coeficientes){
-            // calculando o x que tem interseçãp com a equaçao da reta dada
-            int x = (int)((y - c.b) / c.a);
-            // ax + b = y
-            // ax = y - b
-            // x = (y - b) / a
-            // Se o ponto encontrado estiver dentro do escopo do triangulo,
-            // ele é adicionado como um ponto válido
-            if (x >= xmin && x <= xmax){
-                pontosDeIntersecao.push_back(x);
-            }
+            
+			if (!c.vertical){
+				// calculando o x que tem interseçãp com a equaçao da reta dada
+				int x = ceil((y - c.b) / c.a);
+				// ax + b = y
+				// ax = y - b
+				// x = (y - b) / a
+				// Se o ponto encontrado estiver dentro do escopo do triangulo,
+				// ele é adicionado como um ponto válido
+				if (x >= xmin && x <= xmax){
+					pontosDeIntersecao.push_back(x);
+				}
+			} else {
+				pontosDeIntersecao.push_back(c.x);
+			}
         }
 
         int pontoInicial = pontosDeIntersecao[0];
