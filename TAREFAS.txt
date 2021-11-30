@@ -28,7 +28,7 @@
     - Implementar classes StripLine, LineLoop (Caio)
     - Implementar classes TriangleStrip, TriangleFan (Pedro)
 
-* Semana 5
+* Semana 5 (Não tem tarefas)
 
     (Feriado)
 
@@ -38,10 +38,12 @@
 * Semana 6
 
     (Aula 8)
-    - Transformações 2D
+    - Fazer mandala fazendo transformações.
+    - Fazer a mandala de borboletas. (Luiz)
 
     (Aula 9)
-    - Atributos de vértices, recorte 2D
+    - Implementar método "draw_primitive" (Pedro)
+    - Implementar método "clip" (Caio)
 
 * Semana 7
 
@@ -57,6 +59,7 @@
     - Projeções
 
     (Aula 13)
+
     - Renderizador 3D
 
 * Semana 9
