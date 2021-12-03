@@ -17,7 +17,7 @@ struct Coeficientes{
 	float a;
 	float b;
 	bool vertical;
-	int x;
+	float x;
 };
 
 inline Pixel toPixel(vec2 u){
@@ -191,13 +191,13 @@ std::vector<Pixel> scanline(const Tri& T){
 			c.vertical = false;
 		} else {
 			c.vertical = true;
-			c.x = T[p1](0);
+			c.x = (float)T[p1](0);
 		}
 	}
 
     std::vector<Pixel> out; 
     Pixel p;
-    std::vector<int> pontosDeIntersecao;
+    std::vector<float> pontosDeIntersecao;
 
     for (int y = ymin; y <= ymax; y++){
         
@@ -207,7 +207,7 @@ std::vector<Pixel> scanline(const Tri& T){
             
 			if (!c.vertical){
 				// calculando o x que tem interseçãp com a equaçao da reta dada
-				int x = ceil((y - c.b) / c.a);
+				float x = ((y - c.b) / c.a);
 				// ax + b = y
 				// ax = y - b
 				// x = (y - b) / a
@@ -221,18 +221,21 @@ std::vector<Pixel> scanline(const Tri& T){
 			}
         }
 
-        int pontoInicial = pontosDeIntersecao[0];
-        int pontoFinal = pontoInicial;
+        float minimo = pontosDeIntersecao[0];
+        float maximo = minimo;
 
-        for(int x: pontosDeIntersecao){
-            if (x <= pontoInicial){
-                pontoInicial = x;
-            } else if (x >= pontoFinal){
-                pontoFinal = x;
+        for(float x: pontosDeIntersecao){
+            if (x <= minimo){
+                minimo = x;
+            } else if (x > maximo){
+                maximo = x;
             }
         }
 
-        for (int i = pontoInicial; i < pontoFinal; i++){
+		int xMinimo = ceil(minimo);
+		int xMaximo = floor(maximo);
+
+        for (int i = xMinimo; i <= xMaximo; i++){
             p.x = i;
             out.push_back({p.x, y});
         }
