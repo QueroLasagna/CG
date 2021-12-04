@@ -4,7 +4,7 @@
 #include "Primitives.h"
 #include "VertexUtils.h"
 
-struct Rectangle{
+struct ClipRectangle{
 	float x0, y0, x1, y1;
 };
 
@@ -20,12 +20,12 @@ struct Semiplane{
 };
 
 
-bool clip(Line<Vec2Col>& line, Rectangle rect){
+bool clip(Line<Vec2Col>& line, ClipRectangle rect){
 	/**************** TAREFA - AULA 09 **************/
 	return true;
 }
 
-std::vector<Line<Vec2Col>> clip(const std::vector<Line<Vec2Col>>& lines, Rectangle rect){
+std::vector<Line<Vec2Col>> clip(const std::vector<Line<Vec2Col>>& lines, ClipRectangle rect){
 	std::vector<Line<Vec2Col>> res;
 	for(Line<Vec2Col> line: lines)
 		if(clip(line, rect))
@@ -53,7 +53,7 @@ std::vector<Vec2Col> clip(const std::vector<Vec2Col>& polygon, Semiplane S){
 }
 
 
-std::vector<Vec2Col> clip(const std::vector<Vec2Col>& polygon, Rectangle rect){
+std::vector<Vec2Col> clip(const std::vector<Vec2Col>& polygon, ClipRectangle rect){
 	Semiplane sides[4] = {
 		{ {rect.x0, rect.y0}, { 1,  0} }, // left
 		{ {rect.x1, rect.y0}, {-1,  0} }, // right
@@ -69,7 +69,7 @@ std::vector<Vec2Col> clip(const std::vector<Vec2Col>& polygon, Rectangle rect){
 	return R;
 }
 
-std::vector<Triangle<Vec2Col>> clip(const std::vector<Triangle<Vec2Col>>& tris, Rectangle R){
+std::vector<Triangle<Vec2Col>> clip(const std::vector<Triangle<Vec2Col>>& tris, ClipRectangle R){
 	std::vector<Triangle<Vec2Col>> res;
 
 	for(Triangle<Vec2Col> tri: tris){
