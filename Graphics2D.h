@@ -33,7 +33,7 @@ class Graphics2D{
 
 	template<class Prims>
 	void draw(const std::vector<Vec2Col>& V, const Prims& P){
-		Rectangle R = {-0.5f, -0.5f, img.width-0.5f, img.height-0.5f};
+		ClipRectangle R = {-0.5f, -0.5f, img.width-0.5f, img.height-0.5f};
 		for(auto primitive: clip(assemble(P, V), R))
 			drawPrimitive(primitive);
 	}
