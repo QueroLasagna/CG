@@ -16,8 +16,8 @@ int main(){
 	Img.fill(white);
 
 	//Lines L{P.size()};
-	//LineStrip L{P.size()};
-	LineLoop L{P.size()};
+	LineStrip L{P.size()};
+	// LineLoop L{P.size()};
 	
 	for(Line<vec2> line: assemble(L, P))
 		for(Pixel p : rasterizeLine(line))

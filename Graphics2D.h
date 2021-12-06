@@ -8,7 +8,8 @@
 #include "Primitives.h"
 #include "rasterization.h"
 #include "Clip2D.h"
-	
+#include "vec.h"
+
 class Graphics2D{
 	Image img;
 
@@ -33,7 +34,7 @@ class Graphics2D{
 
 	template<class Prims>
 	void draw(const std::vector<Vec2Col>& V, const Prims& P){
-		Rectangle R = {-0.5f, -0.5f, img.width-0.5f, img.height-0.5f};
+		ClipRectangle R = {-0.5f, -0.5f, img.width-0.5f, img.height-0.5f};
 		for(auto primitive: clip(assemble(P, V), R))
 			drawPrimitive(primitive);
 	}
@@ -55,8 +56,17 @@ class Graphics2D{
 	}
 
 	void drawPrimitive(Triangle<Vec2Col> tri){
-	/**************** TAREFA - AULA 09 **************/
-	}
+    	vec2 v0 = tri[0].position, v1 = tri[1].position, v2 = tri[2].position;
+		Color c0 = tri[0].color, c1 = tri[1].color, c2 = tri[2].color;
+
+        std::array<vec2, 3> pontos = {v0,v1,v2};
+        for(Pixel p: rasterizeTriangle(pontos)){
+            vec2 v = {(float)p.x, (float)p.y};
+			vec3 resultado = barycentric(v, pontos);
+			Color color = toColor((resultado[0]*toVec3(c0)) + (resultado[1]*toVec3(c1)) + (resultado[2]*toVec3(c2)));
+			paint(p, color);
+		}
+    }
 };
 
 #endif
