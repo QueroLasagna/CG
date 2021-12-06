@@ -5,7 +5,7 @@
 #include "bezier.h"
 #include "math.h"
 
-
+//Teste do quadrado
 std::vector<vec2> P = {
     {1, 0},
     {0, 1},

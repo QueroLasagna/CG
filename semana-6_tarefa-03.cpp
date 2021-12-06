@@ -2,6 +2,7 @@
 #include "Clip2D.h"
 #include <iostream>
 
+//Teste do drawPrimitive
 int main(){
 	ClipRectangle R = {100, 200, 500, 400};
 

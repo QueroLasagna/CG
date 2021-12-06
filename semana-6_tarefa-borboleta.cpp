@@ -6,6 +6,8 @@
 std::vector<vec2> CP = loadCurve("borboleta.txt");
 std::vector<vec2> P = sample_cubic_bezier_spline(CP, 30);
 
+
+//Teste da borboleta
 int main(){
     vec2 centro = {
         400, 300,
