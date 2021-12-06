@@ -132,7 +132,7 @@ Mat<M, N> toMat(const Vec<M>& C, V... tail){
 /* TRANSFORMAÇÕES EM COORDENADAS HOMOGÊNEAS */
 inline vec2 operator*(const mat3& A, vec2 P){
 	vec3 Q = A*toVec3(P, 1);
-	return 1.0/Q(2)*toVec2(Q);
+	return 1/Q(2)*toVec2(Q);
 }
 
 inline std::vector<vec2> operator*(const mat3& A, const std::vector<vec2>& Ps){
