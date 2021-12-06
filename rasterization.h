@@ -16,8 +16,8 @@ struct Pixel{
 struct Coeficientes{
 	float a;
 	float b;
-	bool vertical;
-	float x;
+	bool vertical, horizontal;
+	float x, y;
 };
 
 inline Pixel toPixel(vec2 u){
@@ -148,27 +148,37 @@ std::vector<Pixel> simple_rasterize_triangle(const Tri& P){
 	return out;
 }
 
+bool mesmoPonto(vec2 ponto1, vec2 ponto2){
+
+}
+
 //////////////////////////////////////////////////////////////////////////////
 template<class Tri>
 std::vector<Pixel> scanline(const Tri& T){
 	/* TAREFA */
-	int xmin =  ceil(std::min({T[0](0), T[1](0), T[2](0)}));
+    std::vector<Pixel> out; 
+    // Se triangulo for degenerado, sair
+    bool degenerado = false;
+
+    int xmin =  ceil(std::min({T[0](0), T[1](0), T[2](0)}));
 	int xmax = floor(std::max({T[0](0), T[1](0), T[2](0)}));
     int ymin =  ceil(std::min({T[0](1), T[1](1), T[2](1)}));
 	int ymax = floor(std::max({T[0](1), T[1](1), T[2](1)}));
 
+	// Testando casos de degeneração
+    if (xmin == xmax || ymin == ymax){
+        degenerado = true;
+    }
+    if (degenerado){
+        return out;
+    }
     //cout << xmin << endl << xmax << endl;
-
     std::vector<Coeficientes> coeficientes;
-
 	for (int i = 0; i < 3; i++){
-
 		// Pra controlar as variáveis 	
 		int p1, p2;
-		
 		// montando os pares de pontos que formarão
 		// as 3 faces (ou retas) do triangulo
-
 		if (i + 1 >= 3){
 			p1 = i;
 			p2 = 0;
@@ -176,37 +186,70 @@ std::vector<Pixel> scanline(const Tri& T){
 			p1 = i;
 			p2 = i + 1;
 		}	
-
 		// Calculando os coeficientes das 3 retas...
 		// E armazenando num vetor...
-
 		Coeficientes c;
-
-		if (T[p2](0) - T[p1](0) != 0){
-			
+        //
+        //      struct Coeficientes{
+	    //      float a;
+	    //      float b;
+	    //      bool vertical, horizontal;
+	    //      float x;
+        //      float y;
+        //      };
+        //
+        // Se Diferença em x é zero, a reta é vertical
+        if (T[p2](0) - T[p1](0) == 0 || T[p1](0) - T[p2](0) == 0){
+            c.vertical = true;
+            c.horizontal = false;
+            // Guardar o x da reta
+            c.x = (float)T[p2](0);
+        // Se Diferença em y é zero, a reta é horizontal
+        } else if (T[p2](1) - T[p1](1) == 0 || T[p1](1) - T[p2](1) == 0){
+            c.vertical = false;
+            c.horizontal = true;
+            // Guardar o y da reta
+            c.y = (float)T[p2](1);
+        // Se nenhum dos casos acima ocorrer, a equação da reta pode ser calculada a seguir
+        } else {	
 			c.a = (T[p2](1) - T[p1](1)) / (T[p2](0) - T[p1](0));
 			c.b = - (c.a * T[p1](0)) + T[p1](1);
-
-			coeficientes.push_back(c);
 			c.vertical = false;
-		} else {
-			c.vertical = true;
-			c.x = (float)T[p1](0);
-		}
+            c.horizontal = false;
+        }
+		coeficientes.push_back(c);
 	}
-
-    std::vector<Pixel> out; 
     Pixel p;
     std::vector<float> pontosDeIntersecao;
-
+    bool pararIteracao;
+    // Para cada reta y, calcular os pontos de interseção
     for (int y = ymin; y <= ymax; y++){
-        
+        // Resets
         pontosDeIntersecao.clear();
-        
+        pararIteracao = false;
+        // Para cada reta do triangulo ...
         for(Coeficientes c: coeficientes){
-            
-			if (!c.vertical){
-				// calculando o x que tem interseçãp com a equaçao da reta dada
+			// Se a reta for horizontal
+            // e o y analisado é o mesmo da reta (Ou concidente)
+            // Então basta adicionar todos aqueles pixeis no "out"
+            if (c.horizontal && c.y == y){
+                for (int x = xmin; x <= xmax; x++){
+                    p.x = x;
+                    p.y = y;
+                    out.push_back(p);
+                }
+                // Pular para o próximo y da iteração
+                pararIteracao = true;
+                break;
+            }
+            // Se a reta for vertical, então o ponto de interseção
+            // é o próprio x dessa reta
+            else if (c.vertical){
+                pontosDeIntersecao.push_back(c.x);
+            }
+            // Se a reta tiver um coeficiente angular diferente de zero, calcular...
+            else {
+				// calculando o x que tem interseção com a equaçao da reta dada
 				float x = ((y - c.b) / c.a);
 				// ax + b = y
 				// ax = y - b
@@ -216,28 +259,30 @@ std::vector<Pixel> scanline(const Tri& T){
 				if (x >= xmin && x <= xmax){
 					pontosDeIntersecao.push_back(x);
 				}
-			} else {
-				pontosDeIntersecao.push_back(c.x);
 			}
         }
-
-        float minimo = pontosDeIntersecao[0];
-        float maximo = minimo;
-
-        for(float x: pontosDeIntersecao){
-            if (x <= minimo){
-                minimo = x;
-            } else if (x > maximo){
-                maximo = x;
-            }
+        // Pular para o próximo y da iteração
+        if (pararIteracao){
+            continue;
         }
-
-		int xMinimo = ceil(minimo);
-		int xMaximo = floor(maximo);
-
-        for (int i = xMinimo; i <= xMaximo; i++){
-            p.x = i;
-            out.push_back({p.x, y});
+        // Se não, calcular o min e max dos pontos de interseção e
+        // adicionar os pixeis entre eles no "out"
+        else {
+            float minimo = pontosDeIntersecao[0];
+            float maximo = minimo;
+            for(float x: pontosDeIntersecao){
+                if (x <= minimo){
+                    minimo = x;
+                } else if (x > maximo){
+                    maximo = x;
+                }
+            }
+            int xMinimo = ceil(minimo);
+            int xMaximo = floor(maximo);
+            for (int i = xMinimo; i <= xMaximo; i++){
+                p.x = i;
+                out.push_back({p.x, y});
+            }
         }
     }
 	return out;
