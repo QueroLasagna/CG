@@ -7,6 +7,7 @@
 #include <cmath>
 #include <vector>
 #include <fstream>
+#include "vec.h"
 
 template<int M, int N=M>
 struct Mat{

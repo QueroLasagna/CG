@@ -22,6 +22,44 @@ struct Semiplane{
 
 bool clip(Line<Vec2Col>& line, ClipRectangle rect){
 	/**************** TAREFA - AULA 09 **************/
+	vec2 A = line[0].position;
+	vec2 B = line[1].position;
+	Semiplane lados[4] = {
+		{ 
+			{rect.x0, rect.y0}, {1, 0} // Direita
+		},
+		{
+			{rect.x0, rect.y0}, {0, 1} // Cima
+		},
+		{
+			{rect.x1, rect.y1}, {-1, 0} // Esquerda
+		},
+		{
+			{rect.x1, rect.y1}, {0, -1} // baixo
+		}
+	};
+	float maxIn = 0, minOut = 1;
+	for (Semiplane lado: lados){
+		// Se os dois pontos estão no semiplano, passar para o próximo
+		if (!lado.has(A) && !lado.has(B)){
+			return false;
+		}
+		else if (lado.has(A) && lado.has(B)){
+			continue;
+		}
+		float t = lado.intersect(A, B);
+		if (lado.has(A) && !lado.has(B)){
+			minOut = std::min(minOut, t);
+		}
+		if (!lado.has(A) && lado.has(B)){
+			maxIn = std::max(maxIn, t);
+		}
+		if (maxIn > minOut){
+			return false;
+		}
+		line[0].position = (1 - maxIn)*A + maxIn*B;
+		line[1].position = (1 - minOut)*A + minOut*B;
+	}
 	return true;
 }
 
