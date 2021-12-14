@@ -48,10 +48,10 @@
 * Semana 7
 
     (Aula 10)
-    - Transformações 3D
+    - Implementar função rotate (Pedro)
 
     (Aula 11)
-    - Referenciais e sistemas de coordenadas
+    - Implementar função lookAt (Caio)
 
 * Semana 8
 
